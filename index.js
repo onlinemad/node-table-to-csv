@@ -2,7 +2,7 @@ const cheerio = require('cheerio')
 
 module.exports = function (table, options) {
 
-  let table = cheerio.load(table)
+  table = cheerio.load(table)
 
   let createMatrix = function (table) {
     let matrix = [],
@@ -13,13 +13,13 @@ module.exports = function (table, options) {
       matrix[i] = []
 
       table(this).find('th').each(function () {
-        matrix[i][j] = table(this).text().trim().replace(/(\r\n|\n|\r)/gm, '')
+        matrix[i][j] = table(this).text().trim().replace(/(\r\n|\n|\r|,)/gm, '')
         j++
         return matrix
       })
 
       table(this).find('td').each(function () {
-        matrix[i][j] = '"' + table(this).text().trim() + '"'
+        matrix[i][j] = '"' + table(this).text().trim().replace(/(\r\n|\n|\r|,)/gm, '') + '"'
         j++
         return matrix
       })
